@@ -4,21 +4,27 @@ import Navbar from "./Navbar.vue";
 import UploadModal from "./UploadModal.vue";
 import { getSessionID, sendMessage } from "./lib/api/api";
 import ChatSection from "./ChatSection.vue";
+import { useChatStore } from "../stores/Chat";
 
 const chatStarted = ref(true);
 const inputMessage = ref("");
 const message = ref([]);
 const sessionID = ref(null);
+const chatStore = useChatStore;
 
+//mendapatkan session ID digunakan untuk kirim pertanyaan (/ask)
 onMounted(async()=>{
   sessionID.value = await getSessionID();
   console.log(sessionID.value)
 })
 
+//function untuk submit pertanyaan
 async function handleSubmit() {
   console.log("form submitted, please wait...");
   console.log(inputMessage.value)
-
+  
+  //simpan chatID dan message ke dalam store, ID tersebut digunakan untuk url (http://localhost:5173/dashboard/chatID)
+  // chatStore.saveChatId(sessionID.value);  
   chatStarted.value = false;
 
   try {
@@ -29,20 +35,32 @@ async function handleSubmit() {
   message.value.push({
     text: userMessage,
     sender: "user",
+    isLoading: false
   });
 
-  // Kirim ke API dan tunggu balasan
-  const response = await sendMessage(sessionID.value, userMessage);
 
   // Tambahkan balasan bot ke daftar chat
   message.value.push({
-    text: response,
+    text: '',
     sender: "bot",
+    isLoading: true
   });
 
-} catch (err) {
-  console.log(err);
-}
+    // Kirim ke API dan tunggu balasan
+  const response = await sendMessage(sessionID.value, userMessage);
+
+  // Ambil index pesan bot terakhir (yang masih isLoading)
+  const botMsgIndex = message.value.findLastIndex(msg => msg.sender === 'bot' && msg.isLoading);
+
+  // Update pesan bot tersebut
+  if (botMsgIndex !== -1) {
+    message.value[botMsgIndex].text = response;
+    message.value[botMsgIndex].isLoading = false;
+  }
+
+  } catch (err) {
+    console.log(err);
+  }
 }
 </script>
 
@@ -58,7 +76,7 @@ async function handleSubmit() {
       </aside>
 
       <!-- Main Content -->
-      <main class="relative z-10 flex flex-col flex-1 px-8 py-7 min-h-full">
+      <main class="relative z-10 flex flex-col flex-1 pl-8 py-7 min-h-full">
         <div class="relative h-full">
           <!-- Chat Section -->
           <div
@@ -113,7 +131,7 @@ async function handleSubmit() {
               </div>
               <h3 class="text-lg font-semibold mb-2">
                 Stay connected, Boost your productivity with
-                <span class="text-blue-500">Nura</span>
+                <span class="text-blue-500">ACMT BOT</span>
               </h3>
               <p class="text-sm text-gray-500">Collaborate with Team</p>
             </div>

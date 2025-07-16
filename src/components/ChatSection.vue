@@ -1,5 +1,5 @@
 <template>
-  <main class="flex-1 overflow-y-auto space-y-2 hide-scrollbae">
+  <main class="flex-1 overflow-y-auto space-y-2 no-scrollbar pb-32 pr-5">
     <div
       v-for="(msg, index) in message"
       :key="index"
@@ -16,7 +16,10 @@
             : 'bg-white text-gray-800 rounded-bl-none w-2/3',
         ]"
       >
+      <div v-if="msg.isLoading" class="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      <div v-else>
         {{ msg.text }}
+      </div>
       </div>
     </div>
   </main>
