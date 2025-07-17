@@ -1,10 +1,9 @@
 import { createApp } from "vue";
 import "./style.css";
 import App from "./App.vue";
-import Dashboard from "./components/Dashboard.vue";
 import "flowbite";
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-
+import Dashboard from "./layout/Dashboard.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import ChatSection from "./components/ChatSection.vue";
 import { createPinia } from "pinia";
