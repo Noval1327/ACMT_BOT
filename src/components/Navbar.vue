@@ -35,10 +35,10 @@
 
     <!-- Menu List -->
     <ul :class="isExpanded ? 'hidden' : 'space-y-2'">
-      <li class="text-sm font-bold text-black hover:text-blue-500 hover:bg-gray-100 p-2 rounded cursor-pointer">
+      <li class="text-sm font-bold text-black hover:text-blue-500 hover:shadow-md p-3 rounded-lg cursor-pointer">
         Ringkasan Pendapatan
       </li>
-      <li class="text-sm font-bold text-black hover:text-blue-500 hover:bg-gray-100 p-2 rounded cursor-pointer">
+      <li class="text-sm font-bold text-black hover:text-blue-500 hover:shadow-md p-3 rounded-lg cursor-pointer">
         Draft Surat Dinas
       </li>
     </ul>
